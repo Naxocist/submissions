@@ -1,94 +1,73 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> parent[100005];
-vector<pair<int,long long>> graph[100005];
-priority_queue<tuple<long long,int,int>, vector<tuple<long long,int,int>>, greater<tuple<long long,int,int>>> pq;
-priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<pair<long long,int>>> pq2;
-long long dist[100005];
-bool ispart[100005];
-long long dist2[100005];
+#define INF LLONG_MAX
 
-void dfs(int node, int pa) {
-    ispart[node] = 1;
-    for (auto it : parent[node]) {
-        if (it == pa || it == -1)continue;
-        dfs(it,node);
+using ll = long long;
+using pi = pair<ll, ll>;
+
+const int N = 2e5 + 9;
+vector<pi> adj[N], flip[N], group[N];
+ll dA[N], dB[N], dG[N];
+
+void dijk(int s, ll dist[], vector<pi> G[]) {
+    for(int i=0; i<N; ++i) dist[i] = INF;
+    priority_queue<pi> pq;
+
+    dist[s] = 0;
+    pq.emplace(0, s); 
+
+    while(pq.size()) {
+        ll d, u; tie(d, u) = pq.top(); pq.pop();
+
+        for(auto e : G[u]) {
+            int v = e.first, vw = e.second;
+            if(dist[u] + vw < dist[v]) {
+                dist[v] = dist[u] + vw;
+                pq.emplace(-dist[v], v);
+            }
+        }
     }
-    return;
+
+    return ;
 }
 
 int main() {
-    int n, m, s, t;
-    scanf("%d%d%d%d",&n,&m,&s,&t);
-    for (int i = 0; i < m; ++i) {
-        int x, y;
-        long long w;
-        scanf("%d%d%lld",&x,&y,&w);
-        graph[y].push_back({x,w});
+    cin.tie(nullptr)->sync_with_stdio(false);
+
+    int n, m, A, B; cin >> n >> m >> A >> B;
+
+    for(int i=0; i<m; ++i) {
+        int u, v, w; cin >> u >> v >> w;
+        adj[u].emplace_back(v, w);
+        flip[v].emplace_back(u, w);
     }
-    for (int i = 1; i <= n; ++i) {
-        dist[i] = LLONG_MAX;
-        dist2[i] = LLONG_MAX;
-    }
-    pq.push({0,t,-1});
-    dist[t] = 0;
-    // long long finalcall = LLONG_MAX;
-    for (;!pq.empty();) {
-        long long w;
-        int b, pa;
-        tie(w,b,pa) = pq.top();
-        pq.pop();
-        // if (w > finalcall)break;
-        if (w > dist[b]) {
-            continue;
+
+    dijk(A, dA, adj);
+    dijk(B, dB, flip);
+
+    for(int u=1; u<=n; ++u) {
+        if(dA[u] + dB[u] ==  dA[B]) {
+            cout << u << ' ';
+            continue ;
         }
-        if (w <= dist[b]) {
-            parent[b].push_back(pa);
-        }
-        // if (b == s) {
-        //     finalcall = dist[b];
-        // }
-        for (auto it : graph[b]) {
-            if (dist[it.first] >= dist[b]+it.second) {
-                dist[it.first] = dist[b]+it.second;
-                pq.push({dist[it.first],it.first,b});
-            }
+
+        for(auto e : adj[u]) {
+            int v = e.first, vw = e.second;
+            if(dA[v] + dB[v] == dA[B]) group[n+1].emplace_back(u, vw);
+            else group[v].emplace_back(u, vw);
         }
     }
-    dfs(s,-1);
-    for (int i = 1; i <= n; ++i) {
-        if (ispart[i]) {
-            printf("%d ",i);
-            pq2.push({0,i});
-            dist2[i] = 0;
-        }
-    }
-    printf("\n");
-    for (;!pq2.empty();) {
-        long long w;
-        int b;
-        tie(w,b) = pq2.top();
-        pq2.pop();
-        // printf("%lld %d\n",w,b);
-        if (w > dist2[b]) {
-            continue;
-        }
-        for (auto it : graph[b]) {
-            if (dist2[it.first] > dist2[b]+it.second) {
-                // printf("%d %d <<\n",it.first,b);
-                dist2[it.first] = dist2[b]+it.second;
-                pq2.push({dist2[it.first],it.first});
-            }
-        }
-    }
-    int q;
-    scanf("%d",&q);
-    for (int i = 0; i < q; ++i) {
-        int k;
-        scanf("%d",&k);
-        if (dist2[k] == LLONG_MAX)dist2[k] = -1;
-        printf("%lld\n",dist2[k]);
+
+   
+    dijk(n+1, dG, group);
+    cout << '\n';
+    int Q; cin >> Q;
+    while(Q--) {
+        int P; cin >> P;
+        if(dA[P] + dB[P] == dA[B]) cout << 0 << '\n';
+        else if(dG[P] == INF) cout << -1 << '\n';
+        else cout << dG[P] << '\n';
     }
     return 0;
 }
