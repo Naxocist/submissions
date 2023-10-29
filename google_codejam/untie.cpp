@@ -2,7 +2,9 @@
 using namespace std;
 using ll = long long int;
 
+
 void solve() {
+	
 	string s; cin >> s;
 	int n = s.size();
 	vector<int> range;
