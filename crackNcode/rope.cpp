@@ -2,41 +2,82 @@
 using namespace std;
 using ll = long long;
 using pi = pair<ll, ll>;
-ll f(ll l, ll r) {
-	ll n = r-l+1;
-	return n*(n+1)/2;
-}
+#define INF 1e9
+struct S {
+	stack<int> t, mx, mn;
+	S() { mx.push(-INF); mn.push(INF); }
+
+	void push(int x) {
+		t.push(x);
+		mx.push(std::max(mx.top(), x)); 
+		mn.push(std::min(mn.top(), x));
+	}
+
+	void pop() {
+		if(t.empty()) return ;
+		t.pop(); mx.pop(); mn.pop();
+	}
+	int top() { return t.top(); }
+	int max() { return mx.top(); }
+	int min() { return mn.top(); }
+	bool empty() { return t.empty(); }
+};
+
+struct Q {
+	S l, r;
+
+	void push(int x) {
+		r.push(x);
+	}
+
+	void move() {
+		while(!r.empty()) l.push(r.top()), r.pop();
+	}
+
+	int front() {
+		if(l.empty()) move();
+		if(!l.empty()) return l.top();
+	}
+
+	void pop() {
+		if(l.empty()) move();
+		if(!l.empty()) l.pop();
+	}
+
+	int max() {return std::max(l.max(), r.max());}
+	int min() {return std::min(l.min(), r.min());}
+	bool empty() { return l.empty() && r.empty();}
+};
+
 int main() {
 	cin.tie(nullptr)->sync_with_stdio(false);
 	int n, p; cin >> n >> p;
 	ll x, y, z; cin >> x >> y >> z;
-	multiset<ll> ms;
-	vector<ll> cnt(5e5+3, 0), A(n), B(n);
-	for(auto &x : A) cin >> x;
-	for(auto &x : B) cin >> x;
-	vector<pi> w;
-	ll l, r, pt, res, ed = -1; res = l = r = pt = 0;
-	for(; l<n; ++l) {
-		for(;r<n;r++){
-			ll a = A[r], b = B[r];
-			if(pt + a > x) break ;
-			if(y != -1 and ms.size()) {
-				ll mx = *(--ms.end()), mn = *(ms.begin());
-				if(a > mx and a - mn > y) break ;
-				else if(a < mn and mx - a > y) break ; 
-			}
-			if(z != -1 and cnt[b] + 1 > z) break ; 
-			pt += a;
-			if(y != -1) ms.insert(a);
-			if(z != -1) cnt[b] ++;
+	Q q;
+	vector<ll> cnt(5e5+3, 0), a(n+1), b(n+1), qs(n+1);
+	for(int i=1; i<=n; ++i) cin >> a[i];
+	for(int i=1; i<=n; ++i) cin >> b[i];
+
+	ll l, r, res = 0;
+	l = r = 1;
+	for(; r<=n; ++r) {
+		q.push(a[r]);
+		cnt[b[r]] ++;
+		qs[r] = qs[r-1] + a[r];
+
+		while(qs[r] - qs[l-1] > x) q.pop(), cnt[b[l]] --, l++;
+
+		if(y != -1) {
+			while(q.max() - q.min() > y) 
+				q.pop(), cnt[b[l]] --, l++;
 		}
-		pt-=(ll)A[l];
-		if(y != -1) ms.erase(ms.find(A[l]));
-		if(z != -1) cnt[B[l]] -- ;
-		
-		res += f(l, r-1);
-		if(l <= ed) res -= f(l, ed);
-		ed = r-1;
+
+		if(z != -1) {
+			while(cnt[b[r]] > z) {
+				q.pop(), cnt[b[l]] --, l++;
+			}
+		}
+		res += r - l + 1;
 	}
 
 	cout << res;
