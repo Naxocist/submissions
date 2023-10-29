@@ -54,7 +54,7 @@ int main() {
     }
 
     while(pq.size()) s += pq.top(), pq.pop();
-
+    
     printf("%d", s);
     return 0;
 }
