@@ -24,12 +24,18 @@ int main() {
     }
 
     for(int i=1; i<=n; ++i) {
-        res[i] = INT_MIN;
-        for(int l=0; l<i; ++l) {
-            res[i] = max(res[i], res[l] + dp[l+1][i]);
+        res[i] = dp[1][i]; // no cut
+        for(int l=1; l<i; ++l) {
+            res[i] = max(res[i], res[l] + dp[l+1][i]); // try cut = (cut till l) + (no cut from l+1 to i) {cut at l - l+1}
         }
     }
+
     cout << res[n];
 
     return 0;
 }
+
+/*
+7
+6 83 82 88 11 63 8
+*/

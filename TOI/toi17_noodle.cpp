@@ -1,44 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define INF 1e9
+#define int long long
+signed main() {
+	cin.tie(nullptr)->sync_with_stdio(false);
+	int n, m, k; cin >> n >> m >> k;
+	vector<int> v(n);
+	int l = INF, r = 0;
+	for(auto &x : v) cin >> x, l = min(l, x), r += x;
+	int res = l;
+	while(l <= r) {
+		int md = l + (r-l)/2;
+		int s = 0, shop = 0;
+		priority_queue<int> pq;
+		for(auto x : v) {
+			s += x;
+			pq.emplace(-x);
+			if(pq.size() > k) s -= -pq.top(), pq.pop();
 
-using ll = long long;
-using pi = pair<int, int>;
-using tiii = tuple<int, int, int>;
-
-const int N = 1e5 + 3;
-int ar[N];
-
-int main() {
-    // freopen("input.in", "r", stdin);
-    int n, m, k; scanf("%d%d%d", &n, &m, &k);
-
-    ll l, r;
-    l = r = 0;
-    for(int i=1; i<=n; ++i) scanf("%d", &ar[i]), r+= ar[i];
-    
-    ll mx = 0;
-    while(l <= r){
-        ll md = (l+r)/2, s = 0;
-        int use = 0;
-
-        priority_queue<ll, vector<ll>, greater<ll>> pq;
-        for(int i=1; i<=n; ++i){
-            pq.push(ar[i]);
-            s += ar[i];
-            while(pq.size() > k) s -= pq.top(), pq.pop(); // pq will keep holding k highest elements
-
-            if(s >= md && pq.size() == k){
-                use++;
-                s = 0;
-                pq = priority_queue<ll, vector<ll>, greater<ll>>();
-            }
-        }
-   
-        if(use >= m){
-            mx = md;
-            l = md + 1;
-        }else r = md - 1;
-    }
-
-    printf("%lld", mx);
+			if(s >= md and pq.size() == k) {
+				s = 0;
+				shop++;
+				while(pq.size()) pq.pop();
+			}
+		}
+		if(shop >= m) l = md + 1, res = md;
+		else r = md - 1;
+	}	
+	cout << res;
+	return 0;
 }
