@@ -1,21 +1,4 @@
-/*
- Petar 'PetarV' Velickovic
- Algorithm: Knuth-Morris-Pratt
-*/
-
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <iostream>
-#include <vector>
-#include <list>
-#include <string>
-#include <algorithm>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <complex>
+#include <bits/stdc++.h>
 #define MAX_N 1000001
 using namespace std;
 typedef long long lld;
@@ -24,9 +7,6 @@ int n, m;
 string needle, haystack;
 int P[MAX_N];
 vector<int> matches;
-
-//Knuth-Morris-Pratt algoritam za string matching
-//Slozenost: O(N + M)
 
 inline void KMP()
 {
