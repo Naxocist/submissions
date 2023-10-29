@@ -2,47 +2,37 @@
 using namespace std;
 
 const int N = 1e5 + 3;
-int f[N], n;
+int fw[N];
+int n;
 
-int query(int x) {
-    int s = 0;
-    while(x) {
-        s += f[x];
-        x -= x & -x;
-    }
-
-    return s;
+void upd(int i, int x) {
+	for(;i<=n; i+=i&-i) {
+		fw[i] += x;
+	}
 }
 
-void update(int x, int v) {
-    while(x <= n) {
-        f[x] += v;
-        x += x & -x;
-    }
+int get(int i) {
+	int s = 0;
+	for(;i>0; i-=i&-i) {
+		s += fw[i];
+	}
+	return s;
 }
 
 int main() {
+	n = 10;
+	// for(int i=1; i<=n; ++i) cout << fw[i] << ' ' ;
+	upd(3, 3);
+	upd(1, 1);
+	for(int i=1; i<=n; ++i) {
+		cout << get(i) << ' ';
+	}
+	cout << endl;
+ 	int q; cin >> q;
+	while(q--) {
+		int t; cin >> t;
+		cout << get(t) << '\n';
+	}
 
-    cin >> n;
-    for(int i=1; i<=n; ++i) {
-        int x; scanf("%d", &x);
-        int k = i;
-        while(k<=n) {
-            f[k] += x;
-            k += k&-k;
-        }
-    }
-
-    int q; cin >> q;
-    while(q--) {
-        int c, l, r; cin >> c >> l >> r;
-
-        if(c == 1) {
-            cout << query(r) - query(l-1) << '\n';
-        }else {
-            update(l, r);
-        }
-    }
-
-    return 0;
+	return 0;
 }
