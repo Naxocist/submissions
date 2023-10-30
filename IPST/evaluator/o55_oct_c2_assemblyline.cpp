@@ -15,7 +15,7 @@ const int N = 203;
 int dp[N][N][33];
 
 int main() {
-    // cin.tie(nullptr)->sync_with_stdio(false);
+    cin.tie(nullptr)->sync_with_stdio(false);
     while(1) {
         int n; cin >> n;
         if(n == 0) break ;
