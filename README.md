@@ -1,9 +1,9 @@
 # Submission
-my submission during my POSN + IPST journey
+### my submission during my POSN + IPST journey
 ===========================================
 Most of my submission is c++ language.
 
-## Online judge
+### Online judge
 - https://programming.in.th/
 - https://crackncode.org/
 - https://atcoder.jp/
