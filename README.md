@@ -1,5 +1,5 @@
-# Submission
-### my submission during my POSN + IPST journey
+# Submissions
+### my submissions during my POSN + IPST journey
 =========================================== <br>
 All of my submissions are written in c++.
 
