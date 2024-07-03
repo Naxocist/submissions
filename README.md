@@ -1,7 +1,7 @@
 # Submission
 ### my submission during my POSN + IPST journey
 =========================================== <br>
-All of my submissions are c++ language.
+All of my submissions are written in c++.
 
 ### Online judge
 - https://programming.in.th/
