@@ -37,7 +37,7 @@ int main() {
 	    st.push(group);
 	    un(edge[v[i]].first, edge[v[i]].second);
 	}
-    
+
 	while(st.size()) {
 	    printf("%d\n", st.top());
 	    st.pop();
