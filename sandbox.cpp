@@ -19,15 +19,15 @@ using pi = pair<ll, ll>;
 using T = tuple<ll, ll, ll>;
 const ll INF = 2e9;
 
+
 void runcase() {
-    
-    return ;
 }
 
+
 int32_t main() {
-    cin.tie(nullptr)->sync_with_stdio(0);
-    int TC = 1;
-    // cin >> TC;     
-    while(TC--) runcase();
-    return 0;
+	cin.tie(nullptr)->sync_with_stdio(0);
+	int TC = 1;
+	// cin >> TC; 
+	while(TC--) runcase();
+	return 0;
 }
