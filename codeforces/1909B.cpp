@@ -18,34 +18,32 @@ using ll = long long;
 using pi = pair<ll, ll>;
 using T = tuple<ll, ll, ll>;
 const ll INF = 2e9;
-const int N = 2e5 + 3;
-int dsu[N];
-
 
 void runcase() {
+    int n; cin >> n;
 
-	int n; cin >> n;
-	vector<int> v(n); for(auto &x : v) cin >> x;
+    vector<ll> v(n);
+    for(auto &x : v) cin >> x;
 
-	int k; cin >> k;
+    for(ll i=2; i<1LL<<57; i<<=1) {
+        set<ll> t;
+        for(auto x : v) {
+            t.insert(x%i);
+        }
 
-	int l = -1, r = n;
-	while(l + 1 < r) {
-		int md = l + (r-l)/2;
+        if(t.size() == 2) {
+            cout << i << ln;
+            return ;
+        }
+    }
 
-		if(v[md] <= k) r = md;
-		else l = md;
-	}
-
-	cout << v[r] << ln;
-	
-	return ;
+    return ;
 }
 
 int32_t main() {
-	cin.tie(nullptr)->sync_with_stdio(0);
-	int TC = 1;
-	// cin >> TC; 
-	while(TC--) runcase();
-	return 0;
+    cin.tie(nullptr)->sync_with_stdio(0);
+    int TC = 1;
+    cin >> TC; 
+    while(TC--) runcase();
+    return 0;
 }

@@ -18,34 +18,30 @@ using ll = long long;
 using pi = pair<ll, ll>;
 using T = tuple<ll, ll, ll>;
 const ll INF = 2e9;
-const int N = 2e5 + 3;
-int dsu[N];
+const int N = 1e5 + 3;
+
+const int P = 239017, mod = 1e9 + 7;
+
+ll p[N], h[N];
+inline ll get(int l, int r) { return (h[r] - (h[l] * p[r - l])%mod + mod)%mod; }
 
 
 void runcase() {
+    string s; cin >> s;
+    int n = sz(s);
+    p[0] = 1;
+    for(int i=0; i<n-1; ++i){
+        h[i + 1] = h[i] * P + s[i], p[i + 1] = p[i] * P;
+    }
 
-	int n; cin >> n;
-	vector<int> v(n); for(auto &x : v) cin >> x;
 
-	int k; cin >> k;
-
-	int l = -1, r = n;
-	while(l + 1 < r) {
-		int md = l + (r-l)/2;
-
-		if(v[md] <= k) r = md;
-		else l = md;
-	}
-
-	cout << v[r] << ln;
-	
-	return ;
+    return ;
 }
 
 int32_t main() {
-	cin.tie(nullptr)->sync_with_stdio(0);
-	int TC = 1;
-	// cin >> TC; 
-	while(TC--) runcase();
-	return 0;
+    cin.tie(nullptr)->sync_with_stdio(0);
+    int TC = 1;
+    // cin >> TC; 
+    while(TC--) runcase();
+    return 0;
 }
